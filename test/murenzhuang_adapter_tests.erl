@@ -17,28 +17,28 @@ input_is_atom_test_() ->
 root_feature_input_is_empty(FileHandler) ->
     fun() ->
 	    group_leader(FileHandler, self()),
-	    murenzhuang_adapter:feature(root, ''),
+	    murenzhuang_adapter:root(''),
 	    assert_feature(<<"">>, stdout)
     end.
 
 feature_1_input_is_some_atom(FileHandler) ->
     fun() ->
 	    group_leader(FileHandler, self()),
-	    murenzhuang_adapter:feature(feature_1, 'a1b2'),
+	    murenzhuang_adapter:feature_1('a1b2'),
 	    assert_feature(<<"">>, stdout)
     end.
 
 feature_2_input_is_atom(FileHandler) ->
     fun() ->
 	    group_leader(FileHandler, self()),
-	    murenzhuang_adapter:feature(feature_2, '9z8y7'),
+	    murenzhuang_adapter:feature_2('9z8y7'),
 	    assert_feature(<<"yyyy9zz888">>, file_8)
     end.
 
 feature_3_input_is_atom(FileHandler) ->
     fun() ->
 	    group_leader(FileHandler, self()),
-	    murenzhuang_adapter:feature(feature_3, 'ab01x'),
+	    murenzhuang_adapter:feature_3('ab01x'),
 	    assert_feature(<<"z90">>, stdout)
     end.
 
