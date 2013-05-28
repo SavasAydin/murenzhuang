@@ -5,14 +5,16 @@
 -define(FILE_8, file_8).
 
 feature(Feature, Input) ->
-    Steps = [fun get_mutator_result/2,
-	     fun std_or_file_out/2],
-    chain(Steps, {Feature, Input}).
+    Output = get_mutator_result(Feature, Input),
+    std_or_file_out(Feature, Output).
 
 get_mutator_result(Feature, Input) ->
-    MutatorFun = proplists:get_value(Feature, which_mutator()),
-    {Feature, MutatorFun(Input)}.
+    MutatorFun = get_mutator(Feature),
+    MutatorFun(Input).
 
+get_mutator(Feature) ->
+    proplists:get_value(Feature, which_mutator()).
+   
 which_mutator() ->
     [{root, fun no_mutator/1},
      {feature_1, fun mutator_copy/1},
@@ -20,7 +22,7 @@ which_mutator() ->
      {feature_3, fun mutator_decrease/1}
     ].
 
-std_or_file_out(Feature,Output) ->
+std_or_file_out(Feature, Output) ->
     case get_file(Feature) of
 	undefined ->
 	    io:format("~s", [Output]);
@@ -54,10 +56,6 @@ decrease($a) ->
 decrease(X) ->
     X-1.
 
-chain(Functions, {Feature, Input}) ->
-    lists:foldl(fun(F,{Key, I}) -> F(Key, I) end,
-		{Feature, Input},
-		Functions).
 
   
     
