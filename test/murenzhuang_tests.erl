@@ -21,7 +21,14 @@ all_feature_test_() ->
       fun feature_3_input_size_less_than_one_transform_trigger/1,
       fun feature_3_no_boundry_input_and_size_allows_one_transform/1,
       fun feature_3_boundry_input_and_size_allows_one_transform/1,
-      fun feature_3_mix_input_and_size_greater_than_one_transform_trigger/1
+      fun feature_3_mix_input_and_size_greater_than_one_transform_trigger/1,
+      fun feature_4_input_is_empty_list/1,
+      fun feature_4_input_size_less_than_one_transform_trigger/1,
+      fun feature_4_only_integer_input_and_size_allows_one_transform/1,
+      fun feature_4_only_character_input_and_size_allows_one_transform/1,
+      fun feature_4_mix_input_and_allows_one_transform/1,
+      fun feature_4_boundry_input_and_size_allows_one_transform/1,
+      fun feature_4_input_size_allows_two_transforms/1
      ]
     }.
 
@@ -130,6 +137,55 @@ feature_3_mix_input_and_size_greater_than_one_transform_trigger(FileHandler) ->
 	    assert_feature(<<"z90">>, stdout)
     end.
 
+feature_4_input_is_empty_list(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, ""),
+	    assert_feature(<<"">>, stdout)
+    end.
+
+feature_4_input_size_less_than_one_transform_trigger(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "abc"),
+	    assert_feature(<<"">>, stdout)
+    end.
+
+feature_4_only_integer_input_and_size_allows_one_transform(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "12345"),
+	    assert_feature(<<"7">>, stdout)
+    end.
+
+feature_4_only_character_input_and_size_allows_one_transform(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "abcde"),
+	    assert_feature(<<"g">>, stdout)
+    end.
+
+feature_4_mix_input_and_allows_one_transform(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "abc2e"),
+	    assert_feature(<<"2c">>, stdout)
+    end.
+
+feature_4_boundry_input_and_size_allows_one_transform(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "00190aaz0"),
+	    assert_feature(<<"0a">>, stdout)
+    end.
+
+feature_4_input_size_allows_two_transforms(FileHandler) ->
+    fun() ->
+	    group_leader(FileHandler, self()),
+	    murenzhuang:feature(feature_4, "111111111"),
+	    assert_feature(<<"22">>, stdout)
+    end.
+    
 setup() ->
     {ok, F} = file:open(stdout, [write]),
     F.
