@@ -25,9 +25,9 @@ which_mutator() ->
 std_or_file_out(Feature, Output) ->
     case get_file(Feature) of
 	undefined ->
-	    io:format("~s", [Output]);
+	    std_out(Output);
 	File ->
-	    file:write_file(File, Output)
+	    file_out(File, Output)
     end.
 
 get_file(Feature) ->
@@ -35,6 +35,12 @@ get_file(Feature) ->
 
 which_file() ->
     [{feature_2, ?FILE_8}].
+
+file_out(File, Output) ->
+    file:write_file(File, Output).
+
+std_out(Output) ->
+    io:format("~s", [Output]).
 
 no_mutator(Input) ->
     Input.
